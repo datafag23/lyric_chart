@@ -17,6 +17,8 @@ const albumColors = {
     "Midnights": "#1c1257", "The Tortured Poets Department": "#eae8f3"
 };
 
+let albumName = null;
+
 // Function to fetch JSON data
 async function loadLyricsData() {
     try {

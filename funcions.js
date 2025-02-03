@@ -54,7 +54,7 @@ function countWordOccurrences(phrase, album = null) {
 }
 
 // Function to render chart using ECharts
-function renderChart(data, searchTerm, albumName = null) {
+function renderChart(data, searchTerm) {
     const chartDom = document.getElementById('chartCanvas');
     const myChart = echarts.init(chartDom);
 
@@ -111,12 +111,15 @@ function renderChart(data, searchTerm, albumName = null) {
     myChart.setOption(option);
 
     // Add event listener for clicking on bars
-    myChart.on('click', function (params) {
-        if (!albumName) {
-            // If at album level, drill down to songs in clicked album
-            renderChart(data, searchTerm, params.name);
-        }
-    });
+    if(!albumName) {
+        myChart.on('click', function (params) {
+            if (!albumName) {
+                // If at album level, drill down to songs in clicked album
+                albumName = params.name;
+                renderChart(data, searchTerm); // Re-render chart with song data
+            }
+        });
+    }
 
     // Show back button if viewing songs
     document.getElementById("backButton").style.display = albumName ? "block" : "none";
@@ -126,6 +129,7 @@ function renderChart(data, searchTerm, albumName = null) {
 function goBack() {
     const searchTerm = document.getElementById('searchInput').value.trim();
     const results = countWordOccurrences(searchTerm);
+    albumName = null; // Reset albumName
     renderChart(results, searchTerm);
 }
 
