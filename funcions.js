@@ -115,6 +115,7 @@ function renderChart(data, searchTerm) {
         myChart.on('click', function (params) {
             if (!albumName) {
                 // If at album level, drill down to songs in clicked album
+                const searchTerm = document.getElementById('searchInput').value.trim();
                 albumName = params.name;
                 renderChart(data, searchTerm); // Re-render chart with song data
             }
