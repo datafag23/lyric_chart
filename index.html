@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>Taylor Swift Lyric Search</title>
-    <link rel="stylesheet" href="style.css?v=1.7">
+    <link rel="stylesheet" href="style.css?v=1.8">
 </head>
 <body>
 <button id="helpButton" type="button" aria-label="Help" aria-haspopup="dialog" aria-expanded="false">?</button>
@@ -41,8 +41,11 @@
 
     <div class="options-row">
         <div class="options">
-            <input type="checkbox" id="pluralCheckbox">
-            <label for="pluralCheckbox">Include Plurals (e.g., "car" matches "cars")</label>
+            <label class="custom-checkbox-container">
+                <input type="checkbox" id="pluralCheckbox">
+                <span class="custom-checkbox"></span>
+                Include Plurals (e.g., "car" matches "cars")
+            </label>
         </div>
 
         <div class="album-selector">
@@ -76,8 +79,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.1/echarts.min.js"></script>
 
-<script src="funcions.js?v=1.7"></script>
-<script src="script.js?v=1.7"></script>
+<script src="funcions.js?v=1.8"></script>
+<script src="script.js?v=1.8"></script>
 
 </body>
 

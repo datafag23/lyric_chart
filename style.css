@@ -162,26 +162,70 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.custom-checkbox-container {
+    display: flex;
+    align-items: center;
     gap: 8px;
-}
-
-.options input[type="checkbox"] {
-    width: auto;
-    margin-bottom: 0;
     cursor: pointer;
+    user-select: none;
 }
 
-.options input[type="checkbox"]:hover {
-    transform: scale(1.1);
-}
-
-.options label {
+.custom-checkbox-container input[type="checkbox"],
+.album-checkbox-item input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
     cursor: pointer;
+    height: 0;
+    width: 0;
 }
 
-.options input[type="checkbox"]:checked {
-    accent-color: #8f2B40;
+.custom-checkbox {
+    height: 18px;
+    width: 18px;
+    background-color: #fff;
+    border: 2px solid #8f2B40;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+}
 
+.custom-checkbox-container:hover .custom-checkbox,
+.album-checkbox-item:hover .custom-checkbox {
+    background-color: #eee;
+}
+
+.custom-checkbox-container input:checked ~ .custom-checkbox,
+.album-checkbox-item input:checked ~ .custom-checkbox {
+    background-color: #8f2B40;
+}
+
+.custom-checkbox:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-checkbox-container input:checked ~ .custom-checkbox:after,
+.album-checkbox-item input:checked ~ .custom-checkbox:after {
+    display: block;
+}
+
+.custom-checkbox-container .custom-checkbox:after,
+.album-checkbox-item .custom-checkbox:after {
+    left: 4.5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.album-checkbox-label {
+    margin-top: 1px;
 }
 
 #error-msg {
@@ -285,10 +329,8 @@ button:hover {
     gap: 8px;
     color: #8f2B40;
     font-size: 14px;
-}
-
-.album-checkbox-item input[type="checkbox"] {
-    width: auto;
+    cursor: pointer;
+    user-select: none;
 }
 
 .tooltip-hint {

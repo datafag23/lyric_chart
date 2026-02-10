@@ -45,8 +45,9 @@ const myChart = echarts.init(chartDom);
 
 function getAllAlbumsForSelector() {
     const fromData = Object.keys(lyricsData || {});
-    const union = new Set([...fromData, ...hiddenAlbums]);
-    return Array.from(union).sort((a, b) => a.localeCompare(b));
+    const defaultAlbums = fromData.filter(a => !hiddenAlbums.includes(a));
+    // The rest are the ones in hiddenAlbums
+    return [...defaultAlbums, ...hiddenAlbums];
 }
 
 function applyDefaultAlbumSelection() {
@@ -75,7 +76,7 @@ function renderAlbumCheckboxes() {
 
         const row = document.createElement('label');
         row.className = "album-checkbox-item";
-        row.htmlFor = id;
+        // row.htmlFor = id; // No longer needed if input is inside, but we'll keep it for clarity if we want
 
         const cb = document.createElement('input');
         cb.type = "checkbox";
@@ -98,10 +99,15 @@ function renderAlbumCheckboxes() {
             if (searchTerm) triggerSearch();
         });
 
+        const customCb = document.createElement('span');
+        customCb.className = "custom-checkbox";
+
         const text = document.createElement('span');
+        text.className = "album-checkbox-label";
         text.textContent = album;
 
         row.appendChild(cb);
+        row.appendChild(customCb);
         row.appendChild(text);
         list.appendChild(row);
     });
