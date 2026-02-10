@@ -176,6 +176,34 @@ function initAlbumSelectorUI() {
     });
 }
 
+function initHelpModalUI() {
+    const helpBtn = document.getElementById('helpButton');
+    const helpOverlay = document.getElementById('helpOverlay');
+    const helpCloseBtn = document.getElementById('helpClose');
+
+    if (!helpBtn || !helpOverlay || !helpCloseBtn) return;
+
+    const open = () => {
+        helpOverlay.hidden = false;
+        helpBtn.setAttribute('aria-expanded', 'true');
+    };
+
+    const close = () => {
+        helpOverlay.hidden = true;
+        helpBtn.setAttribute('aria-expanded', 'false');
+    };
+
+    helpBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        open();
+    });
+
+    helpCloseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        close();
+    });
+}
+
 // Function to fetch JSON data
 async function loadLyricsData() {
     try {
@@ -186,6 +214,7 @@ async function loadLyricsData() {
         // Initialize album selection + tooltip after data is available
         applyDefaultAlbumSelection();
         initAlbumSelectorUI();
+        initHelpModalUI();
         renderAlbumCheckboxes();
     } catch (error) {
         console.error("Error loading lyrics data:", error);

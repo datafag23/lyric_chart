@@ -9,6 +9,27 @@
     <link rel="stylesheet" href="style.css?v=1.5">
 </head>
 <body>
+<button id="helpButton" type="button" aria-label="Help" aria-haspopup="dialog" aria-expanded="false">?</button>
+
+<div id="helpOverlay" class="overlay" hidden>
+    <div id="helpModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+        <div class="modal-header">
+            <div id="helpTitle" class="modal-title">Help</div>
+            <button id="helpClose" class="icon-button" type="button" aria-label="Close">✕</button>
+        </div>
+        <div class="modal-body">
+            <p><b>How to use:</b></p>
+            <ul>
+                <li>Type a word in the search box and press <b>Search</b> (or Enter).</li>
+                <li>Use <b>Include Plurals</b> to match words like “car” and “cars”.</li>
+                <li>Use <b>Albums</b> to choose which albums are included in the search.</li>
+            </ul>
+            <hr>
+            <p class="credits">I'm using Shayna Kothari's lyric scraper for the lyrics: <a href="https://github.com/shaynak/taylor-swift-lyrics" target="_blank">github.com/shaynak/taylor-swift-lyrics</a></p>
+        </div>
+    </div>
+</div>
+
 <div class="searcher">
     <h1>Taylor Swift Lyric Searcher</h1>
     <label for="searchInput"></label><input type="text" id="searchInput" placeholder="Enter a word...">
@@ -52,8 +73,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.1/echarts.min.js"></script>
 
-<script src="funcions.js?v=1.5"></script>
-<script src="script.js?v=1.5"></script>
+<script src="funcions.js?v=1.6"></script>
+<script src="script.js?v=1.6"></script>
 
 </body>
 </html>
