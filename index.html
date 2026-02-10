@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Taylor Swift Lyric Search</title>
+    <link rel="stylesheet" href="style.css?v=1.5">
+</head>
+<body>
+<div class="searcher">
+    <h1>Taylor Swift Lyric Searcher</h1>
+    <label for="searchInput"></label><input type="text" id="searchInput" placeholder="Enter a word...">
+    <button id="searchButton">Search</button>
+    <div id="error-msg"></div>
+
+    <div class="options-row">
+        <div class="options">
+            <input type="checkbox" id="pluralCheckbox">
+            <label for="pluralCheckbox">Include Plurals (e.g., "car" matches "cars")</label>
+        </div>
+
+        <div class="album-selector">
+            <button id="albumSelectorButton" class="icon-button" type="button" aria-haspopup="true" aria-expanded="false">
+                Albums
+            </button>
+
+            <div id="albumSelectorTooltip" class="tooltip" role="dialog" aria-label="Album selection" hidden>
+                <div class="tooltip-header">
+                    <div class="tooltip-title">Albums used for search</div>
+                    <button id="albumSelectorClose" class="icon-button" type="button" aria-label="Close">✕</button>
+                </div>
+
+                <div class="tooltip-actions">
+                    <button id="albumsSelectAll" type="button">Select all</button>
+                    <button id="albumsSelectNone" type="button">Select none</button>
+                    <button id="albumsSelectDefault" type="button">Default</button>
+                </div>
+
+                <div id="albumCheckboxList" class="album-checkbox-list"></div>
+                <div class="tooltip-hint">Tip: non-official albums are included here, but unchecked by default.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chart">
+    <button id="backButton" onclick="goBack()" style="display: none;">Back</button>
+    <div id="chartCanvas"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.1/echarts.min.js"></script>
+
+<script src="funcions.js?v=1.5"></script>
+<script src="script.js?v=1.5"></script>
+
+</body>
+</html>
