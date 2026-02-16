@@ -1,64 +1,66 @@
 // Function to count word occurrences per album
-function countWordOccurrences(phrase, album = null) {
+function countWordOccurrences(inputPhrase, album = null) {
     if (!lyricsData || Object.keys(lyricsData).length === 0) {
         document.getElementById("error-msg").textContent = "Data is still loading. Please try again.";
         return {};
     }
 
-    let counts = {};
-    phrase = phrase.toLowerCase().trim();
+    const phrases = inputPhrase.split(';').map(p => p.trim().toLowerCase()).filter(p => p !== "");
+    let totalCounts = {};
 
-    const isOneWord = !phrase.includes(' ');
+    phrases.forEach(phrase => {
+        const isOneWord = !phrase.includes(' ');
 
-    // Plural checkbox handling
-    const includePlurals = document.getElementById('pluralCheckbox') && document.getElementById('pluralCheckbox').checked;
+        // Plural checkbox handling
+        const includePlurals = document.getElementById('pluralCheckbox') && document.getElementById('pluralCheckbox').checked;
 
-    // If checkbox is checked and it's one word, add (s)? to the regex
-    const searchRegex = isOneWord ?
-        new RegExp(`\\b${phrase}${includePlurals ? '(s)?' : ''}\\b`, 'gi') :
-        new RegExp(phrase, 'gi');
+        // If checkbox is checked and it's one word, add (s)? to the regex
+        const searchRegex = isOneWord ?
+            new RegExp(`\\b${phrase}${includePlurals ? '(s)?' : ''}\\b`, 'gi') :
+            new RegExp(phrase, 'gi');
 
-    if (album) {
-        // Count occurrences only within the selected album
-        if (!lyricsData[album]) {
-            console.error("Album not found:", album);
-            return {};
-        }
+        if (album) {
+            // Count occurrences only within the selected album
+            if (!lyricsData[album]) {
+                console.error("Album not found:", album);
+                return;
+            }
 
-        for (let song in lyricsData[album]) {
-            let count = 0;
-            lyricsData[album][song].forEach(line => {
-                const matches = line.lyric.toLowerCase().match(searchRegex);
-                if (matches) {
-                    count += matches.length * line.multiplicity;
-                }
-            });
-
-            counts[song] = count;
-        }
-    } else {
-        // Count occurrences across selected albums (if selection exists)
-        const hasSelection = (typeof selectedAlbums !== "undefined") && selectedAlbums instanceof Set && selectedAlbums.size > 0;
-
-        for (let albumName in lyricsData) {
-            if (hasSelection && !selectedAlbums.has(albumName)) continue;
-
-            let count = 0;
-
-            for (let song in lyricsData[albumName]) {
-                lyricsData[albumName][song].forEach(line => {
+            for (let song in lyricsData[album]) {
+                let count = 0;
+                lyricsData[album][song].forEach(line => {
                     const matches = line.lyric.toLowerCase().match(searchRegex);
                     if (matches) {
                         count += matches.length * line.multiplicity;
                     }
                 });
+
+                totalCounts[song] = (totalCounts[song] || 0) + count;
             }
+        } else {
+            // Count occurrences across selected albums (if selection exists)
+            const hasSelection = (typeof selectedAlbums !== "undefined") && selectedAlbums instanceof Set && selectedAlbums.size > 0;
 
-            counts[albumName] = count;
+            for (let albumName in lyricsData) {
+                if (hasSelection && !selectedAlbums.has(albumName)) continue;
+
+                let count = 0;
+
+                for (let song in lyricsData[albumName]) {
+                    lyricsData[albumName][song].forEach(line => {
+                        const matches = line.lyric.toLowerCase().match(searchRegex);
+                        if (matches) {
+                            count += matches.length * line.multiplicity;
+                        }
+                    });
+                }
+
+                totalCounts[albumName] = (totalCounts[albumName] || 0) + count;
+            }
         }
-    }
+    });
 
-    return counts;
+    return totalCounts;
 }
 
 // Function to render chart using ECharts
@@ -67,6 +69,8 @@ function renderChart(data, searchTerm) {
     let categories, seriesData, titleText, interval;
 
     console.log("data", data);
+
+    const displaySearchTerm = searchTerm.split(';').map(s => s.trim()).filter(s => s !== "").join('; ');
 
     if (albumName) {
         data = countWordOccurrences(searchTerm, albumName);
@@ -79,7 +83,7 @@ function renderChart(data, searchTerm) {
                 borderWidth: 0.25
             }
         }));
-        titleText = `"${searchTerm}" Occurrences in "${albumName}" Songs (Total: ${Object.values(data).reduce((a, b) => a + b, 0)})`;
+        titleText = `"${displaySearchTerm}" Occurrences in "${albumName}" Songs (Total: ${Object.values(data).reduce((a, b) => a + b, 0)})`;
 
         interval = 4;
     } else {
@@ -96,7 +100,7 @@ function renderChart(data, searchTerm) {
             }
         }));
 
-        titleText = `"${searchTerm}" Occurrences in Selected Albums (Total: ${categories.reduce((sum, a) => sum + (data[a] || 0), 0)})`;
+        titleText = `"${displaySearchTerm}" Occurrences in Selected Albums (Total: ${categories.reduce((sum, a) => sum + (data[a] || 0), 0)})`;
         interval = 0;
     }
 
@@ -142,8 +146,8 @@ function renderChart(data, searchTerm) {
 // Function to return to album view
 function goBack() {
     const searchTerm = document.getElementById('searchInput').value.trim();
-    const results = countWordOccurrences(searchTerm);
     albumName = null; // Reset albumName
+    const results = countWordOccurrences(searchTerm);
     renderChart(results, searchTerm);
 }
 
