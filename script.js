@@ -212,7 +212,9 @@ function initHelpModalUI() {
 
 // Function to fetch JSON data
 async function loadLyricsData() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
     try {
+        if (loadingOverlay) loadingOverlay.hidden = false;
         const response = await fetch('data.json'); // Adjust the path if necessary
         lyricsData = await response.json();
         console.log("Lyrics data loaded:", lyricsData); // Debugging
@@ -224,6 +226,8 @@ async function loadLyricsData() {
         renderAlbumCheckboxes();
     } catch (error) {
         console.error("Error loading lyrics data:", error);
+    } finally {
+        if (loadingOverlay) loadingOverlay.hidden = true;
     }
 }
 
